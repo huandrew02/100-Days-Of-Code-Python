@@ -1,0 +1,1 @@
+    lowerSum = 0
