@@ -12,19 +12,21 @@ class Snake:
         self.bodies = []
         self.create_snake()
         self.head = self.bodies[0]
-        self.move()
-        self.up()
-        self.down()
-        self.left()
-        self.right()
+
 
     def create_snake(self):
         for i in STARTING_POS:
-            body = Turtle(shape="square")
-            body.penup()
-            body.color("white")
-            body.goto(i)
-            self.bodies.append(body)
+            self.addBody(i)
+
+    def addBody(self,i):
+        newbody = Turtle(shape="square")
+        newbody.penup()
+        newbody.color("white")
+        newbody.goto(i)
+        self.bodies.append(newbody)
+        
+    def extend(self):
+        self.addBody(self.bodies[-1].position()) #adds new body to the very last part of the body
 
     def move(self):
         for body_num in range(len(self.bodies) - 1, 0, -1):
