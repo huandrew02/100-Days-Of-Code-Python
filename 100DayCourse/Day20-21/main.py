@@ -16,10 +16,10 @@ food = Food()
 scoreboard = Scoreboard()
 
 screen.listen()
-screen.onkey(snake.up, "Up")
-screen.onkey(snake.down, "Down")
-screen.onkey(snake.left, "Left")
-screen.onkey(snake.right, "Right")
+screen.onkey(snake.up, "w")
+screen.onkey(snake.down, "s")
+screen.onkey(snake.left, "a")
+screen.onkey(snake.right, "d")
 
 game_is_on = True
 while game_is_on:
@@ -28,21 +28,22 @@ while game_is_on:
     snake.move()
 
     #food collision
-    if snake.head.distance(food) < 15:
+    if snake.head.distance(food) < 18:
         food.refresh()
         snake.extend()
         scoreboard.increaseScore()
 
     #wall collision
     if snake.head.xcor() > 290 or snake.head.xcor() < -290 or snake.head.ycor() > 290 or snake.head.ycor() < -290:
-        game_is_on = False
-        scoreboard.gameover()
+        scoreboard.reset()
+        snake.reset()
+
 
     #tail collision
     for body in snake.bodies[1:]:
         if snake.head.distance(body) < 10:
-            game_is_on = False
-            scoreboard.gameover()
+            scoreboard.reset()
+            snake.reset()
 
 
 

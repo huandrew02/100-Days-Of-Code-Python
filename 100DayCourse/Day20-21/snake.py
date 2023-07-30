@@ -13,7 +13,6 @@ class Snake:
         self.create_snake()
         self.head = self.bodies[0]
 
-
     def create_snake(self):
         for i in STARTING_POS:
             self.addBody(i)
@@ -35,6 +34,11 @@ class Snake:
             new_y = self.bodies[body_num - 1].ycor()
             self.bodies[body_num].goto(new_x, new_y)
         self.head.forward(MOVE_DISTANCE)
+
+    def reset(self):
+        for body in self.bodies:
+            body.reset()
+        self.__init__()
 
     def up(self):
         if self.head.heading() != DOWN:
