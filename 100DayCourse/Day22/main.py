@@ -3,23 +3,14 @@ from paddle import Paddle
 from ball import Ball
 from scoreboard import Scoreboard
 import time
-screen = Screen()
-screen.setup(width=800, height=600)
-screen.bgcolor("black")
-screen.title("Pong Game")
-screen.tracer(0)
+import random
 
-r_paddle = Paddle((350, 0))
-l_paddle = Paddle((-350, 0))
+# ...
 
-ball = Ball()
-scoreboard = Scoreboard()
-screen.listen()
-screen.onkeypress(r_paddle.go_up, "Up")
-screen.onkeypress(r_paddle.go_down, "Down")
+# Create an AI-controlled paddle for the left side
+ai_paddle = Paddle((-350, 0))
 
-screen.onkeypress(l_paddle.go_up, "w")
-screen.onkeypress(l_paddle.go_down, "s")
+# ...
 
 game_is_on = True
 while game_is_on:
@@ -27,12 +18,18 @@ while game_is_on:
     screen.update()
     ball.move()
 
-    # Top and bottom wall collision 
+    # Top and bottom wall collision
     if ball.ycor() > 280 or ball.ycor() < -280:
         ball.bounce_y()
-    
+
+    # AI Paddle movement (simple tracking of the ball's y-coordinate)
+    if ai_paddle.ycor() < ball.ycor():
+        ai_paddle.go_up()
+    elif ai_paddle.ycor() > ball.ycor():
+        ai_paddle.go_down()
+
     # Paddle collision
-    if ball.check_collision(r_paddle) or ball.check_collision(l_paddle):
+    if ball.check_collision(r_paddle) or ball.check_collision(ai_paddle):
         ball.bounce_x()
 
     # right and left paddle missed ball
@@ -42,5 +39,10 @@ while game_is_on:
     if ball.xcor() < -380:
         ball.refresh()
         scoreboard.increase_r_score()
+
+    # Optional: Add a bit of randomness to AI's movement
+    # This can make the game more interesting
+    # random_delay = random.randint(0, 20)  # Adjust the range as needed
+    # time.sleep(random_delay / 10)  # Adjust the divisor for desired speed variation
 
 screen.exitonclick()
